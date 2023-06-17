@@ -57,6 +57,9 @@ ping -c "${CONNECTION_RETRY_COUNT}" "$GATEWAY_IP"
 ip link add vxlan0 type vxlan id "$VXLAN_ID" dev eth0 dstport 0 || true
 bridge fdb append to 00:00:00:00:00:00 dst "$GATEWAY_IP" dev vxlan0
 ip link set up dev vxlan0
+if [ "${VPN_INTERFACE:-tun0}" = "wg0" ];then
+    ip link set mtu 1420 dev vxlan0
+fi
 
 cat << EOF > /etc/dhclient.conf
 backoff-cutoff 2;
