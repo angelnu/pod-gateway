@@ -30,6 +30,9 @@ VXLAN_GATEWAY_IP="${VXLAN_IP_NETWORK}.1"
 ip link add vxlan0 type vxlan id $VXLAN_ID dev eth0 dstport 0 || true
 ip addr add ${VXLAN_GATEWAY_IP}/24 dev vxlan0 || true
 ip link set up dev vxlan0
+if [ "${VPN_INTERFACE:-tun0}" = "wg0" ];then
+    ip link set mtu 1420 dev vxlan0
+fi
 
 # check if rule already exists (retry)
 if ! ip rule | grep -q "from all lookup main suppress_prefixlength 0"; then
