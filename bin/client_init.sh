@@ -58,7 +58,7 @@ ip route
 ping -c "${CONNECTION_RETRY_COUNT}" "$GATEWAY_IP"
 
 # Create tunnel NIC
-ip link add vxlan0 type vxlan id "$VXLAN_ID" dev eth0 dstport 0 || true
+ip link add vxlan0 type vxlan id "$VXLAN_ID" dev eth0 dstport "${VXLAN_PORT:-0}" || true
 bridge fdb append to 00:00:00:00:00:00 dst "$GATEWAY_IP" dev vxlan0
 ip link set up dev vxlan0
 if [[ -n "$VPN_INTERFACE_MTU" ]]; then

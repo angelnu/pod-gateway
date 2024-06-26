@@ -13,6 +13,8 @@ NOT_ROUTED_TO_GATEWAY_CIDRS=""
 
 # Vxlan ID to use
 VXLAN_ID="42"
+# Vxlan Port to use, change it to 4789 (preferably) when using Cillium
+VXLAN_PORT="0"
 # VXLAN need an /24 IP range not conflicting with K8S and local IP ranges
 VXLAN_IP_NETWORK="172.16.0"
 # Keep a range of IPs for static assignment in nat.conf
