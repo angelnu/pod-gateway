@@ -38,10 +38,20 @@ fi
 ip addr
 ip route
 
+# Handle hostnames in K8s pod environments
+if [ -n "$KUBERNETES_SERVICE_HOST" ]; then # if this env var exists, it's probably K8s
+  # In Kubernetes, extract the base pod name before the first dash
+  HOSTNAME_REAL=$(hostname | cut -d'-' -f1)
+else
+  # In Docker or other environments, use the full hostname
+  HOSTNAME_REAL=$(hostname)
+fi
+echo $HOSTNAME_REAL
+
 # Derived settings
 K8S_DNS_IP="$(cut -d ' ' -f 1 <<< "$K8S_DNS_IPS")"
 GATEWAY_IP="$(dig +short "$GATEWAY_NAME" "@${K8S_DNS_IP}")"
-NAT_ENTRY="$(grep "^$(hostname) " /config/nat.conf || true)"
+NAT_ENTRY="$(grep "^$HOSTNAME_REAL " /config/nat.conf || true)"
 VXLAN_GATEWAY_IP="${VXLAN_IP_NETWORK}.1"
 
 # Make sure there is correct route for gateway
