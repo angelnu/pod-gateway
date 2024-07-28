@@ -96,6 +96,8 @@ EOF
 # Configure IP and default GW though the gateway docker
 if [[ -z "$NAT_ENTRY" ]]; then
   echo "Get dynamic IP"
+  # cleanup old processes if they exist
+  killall -q dhclient || true
   dhclient -v -cf /etc/dhclient.conf vxlan0
 else
   IP=$(cut -d' ' -f2 <<< "$NAT_ENTRY")
