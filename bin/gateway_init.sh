@@ -27,7 +27,7 @@ fi
 
 # Create VXLAN NIC
 VXLAN_GATEWAY_IP="${VXLAN_IP_NETWORK}.1"
-ip link add vxlan0 type vxlan id $VXLAN_ID dev eth0 dstport 0 || true
+ip link add vxlan0 type vxlan id $VXLAN_ID dev eth0 dstport "${VXLAN_PORT:-0}" || true
 ip addr add ${VXLAN_GATEWAY_IP}/24 dev vxlan0 || true
 ip link set up dev vxlan0
 if [[ -n "$VPN_INTERFACE_MTU" ]]; then
