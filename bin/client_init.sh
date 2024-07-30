@@ -26,7 +26,7 @@ ip route del 0/0 || /bin/true
 
 # We don't support IPv6 at the moment, so delete default route to prevent leaking traffic.
 echo "Deleting existing default IPv6 route to prevent leakage"
-ip route -6 del default || /bin/true
+ip -6 route del default || /bin/true
 
 # After this point nothing should be reachable -> check
 if ping -c 1 -W 1000 8.8.8.8; then
