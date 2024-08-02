@@ -14,9 +14,10 @@ if [ ! -f /etc/resolv.conf.org ]; then
   echo "/etc/resolv.conf.org written"
 fi
 
-#Get K8S DNS
-K8S_DNS=$(grep nameserver /etc/resolv.conf.org | cut -d' ' -f2)
-
+# Get K8S DNS if not set
+if [ -z "$DNS_LOCAL_SERVER" ]; then
+  DNS_LOCAL_SERVER=$(grep nameserver /etc/resolv.conf.org | cut -d' ' -f2)
+fi
 
 cat << EOF > /etc/dnsmasq.d/pod-gateway.conf
 # DHCP server settings
@@ -56,7 +57,7 @@ fi
 for local_cidr in $DNS_LOCAL_CIDRS; do
   cat << EOF >> /etc/dnsmasq.d/pod-gateway.conf
   # Send ${local_cidr} DNS queries to the K8S DNS server
-  server=/${local_cidr}/${K8S_DNS}
+  server=/${local_cidr}/${DNS_LOCAL_SERVER}
 EOF
 done
 

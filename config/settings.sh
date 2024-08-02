@@ -30,6 +30,8 @@ VPN_LOCAL_CIDRS="10.0.0.0/8 192.168.0.0/16"
 # DNS queries to these domains will be resolved by K8S DNS instead of
 # the default (typcally the VPN client changes it)
 DNS_LOCAL_CIDRS="local"
+# Dns to use for local resolution, if unset, will use default resolv.conf
+DNS_LOCAL_SERVER=
 
 # dnsmasq monitors directories. /etc/resolv.conf in a container is in another
 # file system so it does not work. To circumvent this a copy is made using
