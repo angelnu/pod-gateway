@@ -14,6 +14,7 @@ if ip addr | grep -q vxlan0; then
   ip link del vxlan0
 else
   K8S_GW_IP=${K8S_DEFAULT_GW:-$(/sbin/ip route | awk '/default/ { print $3 }')}
+  
   for local_cidr in $NOT_ROUTED_TO_GATEWAY_CIDRS; do
     # command might fail if rule already set
     ip route add "$local_cidr" via "$K8S_GW_IP" || /bin/true
