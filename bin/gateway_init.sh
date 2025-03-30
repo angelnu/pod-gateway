@@ -84,6 +84,12 @@ if [[ -n "$VPN_INTERFACE" ]]; then
     done
   done </config/nat.conf
 
+  if [ -n "$VXLAN_PORT" ]; then
+    echo "Allow VXLAN traffic from eth0"
+    iptables -A INPUT -i eth0 -p udp --dport=${VXLAN_PORT} -j ACCEPT
+    iptables -A OUTPUT -o eth0 -p udp --dport=${VXLAN_PORT} -j ACCEPT
+  fi
+
   echo "Allow DHCP traffic from vxlan"
   iptables -A INPUT -i vxlan0 -p udp --sport=68 --dport=67 -j ACCEPT
 
