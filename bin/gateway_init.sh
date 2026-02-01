@@ -114,6 +114,7 @@ if [[ -n "$VPN_INTERFACE" ]]; then
 
     # Allow local traffic
     for local_cidr in $VPN_LOCAL_CIDRS; do
+      iptables -A FORWARD -d "$local_cidr" -j ACCEPT
       iptables -A OUTPUT -d "$local_cidr" -j ACCEPT
     done
 
