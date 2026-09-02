@@ -75,7 +75,7 @@ if [[ -n "$VPN_INTERFACE_MTU" ]]; then
   ETH0_INTERFACE_MTU=$(cat /sys/class/net/eth0/mtu)
   VXLAN0_INTERFACE_MAX_MTU=$((ETH0_INTERFACE_MTU-50))
   #Ex: if tun0 = 1500 and max mtu is 1450
-  if [ ${VPN_INTERFACE_MTU} >= ${VXLAN0_INTERFACE_MAX_MTU} ];then
+  if [ "${VPN_INTERFACE_MTU}" -ge "${VXLAN0_INTERFACE_MAX_MTU}" ];then
     ip link set mtu "${VXLAN0_INTERFACE_MAX_MTU}" dev vxlan0
   #Ex: if wg0 = 1420 and max mtu is 1450
   else
